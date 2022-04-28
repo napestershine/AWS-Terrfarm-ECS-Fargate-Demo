@@ -1,7 +1,7 @@
 resource "aws_alb" "api" {
   name            = "api-load-balancer"
   subnets         = aws_subnet.public.*.id
-  security_groups = [aws_security_group, lb.id]
+  security_groups = [aws_security_group.alb.id]
 }
 
 resource "aws_alb_target_group" "api" {
@@ -24,12 +24,12 @@ resource "aws_alb_target_group" "api" {
 
 # Redirect traffic from ALB
 resource "aws_alb_listener" "api" {
-  load_balancer_arn = aws_alb.main.id
+  load_balancer_arn = aws_alb.api.id
   port              = var.app_port
   protocol          = "HTTP"
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.api.arn
+    target_group_arn = aws_alb_target_group.api.arn
   }
 }
