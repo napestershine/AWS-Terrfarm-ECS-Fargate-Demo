@@ -9,7 +9,7 @@ resource "aws_security_group" "alb" {
     protocol         = "tcp"
     from_port        = var.app_port
     to_port          = var.app_port
-    cidr_blocks       = ["0.0.0.0/0"]
+    cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
     prefix_list_ids  = []
     security_groups  = []

@@ -26,21 +26,21 @@ resource "aws_ecs_task_definition" "api" {
 
 resource "aws_ecs_service" "api" {
   name            = "api-service"
-  cluster         = aws_ecs_cluster.main.id
+  cluster         = aws_ecs_cluster.api.id
   task_definition = aws_ecs_task_definition.api.arn
   desired_count   = var.app_count
   launch_type     = "FARGATE"
 
   network_configuration {
     security_groups = [
-      aws_security_group.ecs_task.id
+      aws_security_group.ecs_tasks.id
     ]
     subnets          = aws_subnet.private.*.id
     assign_public_ip = true
   }
 
   load_balancer {
-    target_group_arn = aws_alb_target_group.app.id
+    target_group_arn = aws_alb_target_group.api.id
     container_name   = "api"
     container_port   = var.app_port
   }

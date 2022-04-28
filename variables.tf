@@ -25,7 +25,7 @@ variable "fargate_cpu" {
 
 variable "fargate_memory" {
   description = "AWS Fargate instance memory to provision in MB"
-  default     = "1024"
+  default     = "2048"
 }
 
 variable "ecs_task_execution_role_name" {
