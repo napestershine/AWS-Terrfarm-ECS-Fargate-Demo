@@ -4,18 +4,32 @@ resource "aws_security_group" "alb" {
   description = "Control access to ALB"
   vpc_id      = aws_vpc.main.id
 
-  ingress = {
-    protocol   = "tcp"
-    from_port  = var.app_port
-    to_port    = var.app_port
-    cidr_block = ["0.0.0.0/0"]
-  }
+  ingress = [{
+    description      = "TLS from VPC"
+    protocol         = "tcp"
+    from_port        = var.app_port
+    to_port          = var.app_port
+    cidr_blocks       = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+    prefix_list_ids  = []
+    security_groups  = []
+    self             = false
+  }]
 
-  egress = {
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-    from_port   = 0
-    to_port     = 0
+  egress = [{
+    description      = "TLS from VPC"
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    from_port        = 0
+    to_port          = 0
+    ipv6_cidr_blocks = ["::/0"]
+    prefix_list_ids  = []
+    security_groups  = []
+    self             = false
+  }]
+
+  tags = {
+    Name = "ECS-Fargate"
   }
 }
 
@@ -25,17 +39,32 @@ resource "aws_security_group" "ecs_tasks" {
   description = "allow inbound access through ALB only"
   vpc_id      = aws_vpc.main.id
 
-  ingress = {
-    protocol   = "tcp"
-    from_port  = var.app_port
-    to_port    = var.app_port
-    security = [aws_security_group.alb.id]
-  }
+  ingress = [{
+    description      = "TLS from VPC"
+    protocol         = "tcp"
+    from_port        = var.app_port
+    to_port          = var.app_port
+    cidr_blocks      = ["0.0.0.0/0"]
+    security         = [aws_security_group.alb.id]
+    ipv6_cidr_blocks = ["::/0"]
+    prefix_list_ids  = []
+    security_groups  = []
+    self             = false
+  }]
 
-  egress = {
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-    from_port   = 0
-    to_port     = 0
+  egress = [{
+    description      = "TLS from VPC"
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    from_port        = 0
+    to_port          = 0
+    ipv6_cidr_blocks = ["::/0"]
+    prefix_list_ids  = []
+    security_groups  = []
+    self             = false
+  }]
+
+  tags = {
+    Name = "ECS-Fargate"
   }
 }
