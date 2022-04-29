@@ -35,10 +35,20 @@ variable "ecs_task_execution_role_name" {
 
 variable "az_count" {
   description = "Number of AZs to cover in a specific region"
-  default     = 1
+  default     = 2
 }
 
 variable "health_check_path" {
   description = "Health check path for ALB"
   default     = "/"
+}
+
+variable "cidr" {
+  description = "The CIDR block for the VPC."
+  default     = "10.0.0.0/16"
+}
+
+variable "availability_zones" {
+  description = "a comma-separated list of availability zones"
+  default     = ["us-east-1a", "us-east-1b", "us-east-1c", "us-east-1d", "us-east-1e", "us-east-1f"]
 }
